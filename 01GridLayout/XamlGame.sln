@@ -1,0 +1,48 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.27004.2008
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "01GridLayout", "01GridLayout\01GridLayout.csproj", "{EF207599-49E9-4230-9250-903276D10F0D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "02StackPanel", "02StackPanel\02StackPanel.csproj", "{0D45B281-65EF-4735-A0C8-16EA170F058D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "03DockPanel", "03DockPanel\03DockPanel.csproj", "{2BF1F0A1-99F1-4F4F-90CA-29C47128A961}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{74BC5E3B-DF98-4C13-BBA2-3F6C0B7A704F}"
+	ProjectSection(SolutionItems) = preProject
+		Specification.md = Specification.md
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "XamlGame", "XamlGame\XamlGame.csproj", "{7D57684C-2FF4-4E69-A6FE-997062BD6869}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{EF207599-49E9-4230-9250-903276D10F0D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EF207599-49E9-4230-9250-903276D10F0D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EF207599-49E9-4230-9250-903276D10F0D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EF207599-49E9-4230-9250-903276D10F0D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0D45B281-65EF-4735-A0C8-16EA170F058D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0D45B281-65EF-4735-A0C8-16EA170F058D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0D45B281-65EF-4735-A0C8-16EA170F058D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0D45B281-65EF-4735-A0C8-16EA170F058D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2BF1F0A1-99F1-4F4F-90CA-29C47128A961}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2BF1F0A1-99F1-4F4F-90CA-29C47128A961}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2BF1F0A1-99F1-4F4F-90CA-29C47128A961}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2BF1F0A1-99F1-4F4F-90CA-29C47128A961}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7D57684C-2FF4-4E69-A6FE-997062BD6869}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7D57684C-2FF4-4E69-A6FE-997062BD6869}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7D57684C-2FF4-4E69-A6FE-997062BD6869}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7D57684C-2FF4-4E69-A6FE-997062BD6869}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {07389A04-68C0-4CCE-813E-888550CE864B}
+	EndGlobalSection
+EndGlobal
