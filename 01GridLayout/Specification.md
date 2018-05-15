@@ -23,18 +23,18 @@ Szeretnénk készíteni egy reakcióidõ mérõ játékot. A játék egymás után mutat kárt
 - **Elek** elindítja az alkalmazást, és néhány játékot játszik, ezáltal képet nyer az aktuális reakció idejérõl, koncentrációképességérõl.
 
 ## Játékmenet
-- Kezdéskor kapunk egy kártyát, 
-- majd a játék indításával a kártyánkat egy új váltja fel. A játék indítása, az Indítás gombbal megy.
-- A visszajelzésünkre (egyforma/nem egyforma) 
-- a játék jelzi egy zöld pipával/piros kereszttel, hogy a válaszunk helyes vagy helytelen.
-- a játékot billentyûzettel lehessen játszani
-- A válasznak megfelelõ pontot számolja, 
-- méri az egyes reakcióidõt 
-- és az átlagos reakcióidõt is. 
-- A játék meghatározott ideig tart, amit a kezdéstõl egy visszaszámláló óra jelez. 
-- A játék végén látjuk a pontszámunkat, 
-- és a top 5 pontszámot. 
-- Ha akarjuk újrakezdhetjük a játékot, vagy kiléphetünk.
+- [X] Kezdéskor kapunk egy kártyát, 
+- [X] majd a játék indításával a kártyánkat egy új váltja fel. A játék indítása, az Indítás gombbal megy.
+- [X] A visszajelzésünkre (egyforma/nem egyforma) 
+- [X] a játék jelzi egy zöld pipával/piros kereszttel, hogy a válaszunk helyes vagy helytelen.
+- [X] a játékot billentyûzettel lehessen játszani
+- [X] A válasznak megfelelõ pontot számolja, 
+  - [X] méri az egyes reakcióidõt 
+  - [X] és az átlagos reakcióidõt is. 
+- [ ] A játék meghatározott ideig tart, amit a kezdéstõl egy visszaszámláló óra jelez. 
+- [X] A játék végén látjuk a pontszámunkat, 
+- [ ] és a top 5 pontszámot. 
+- [X] Ha akarjuk újrakezdhetjük a játékot, vagy kiléphetünk.
 
 ## A játék fõképernyõje
 
@@ -157,3 +157,19 @@ Szeretnénk készíteni egy reakcióidõ mérõ játékot. A játék egymás után mutat kárt
 - az új kártya húzását is animációval jelezni
 - a használható billentyûk jelzése a gombokon
 - játék az animációval: mit lehet csinálni a gombokkal
+
+## Feladatok
+- a pontszám számítása és megmutatása
+  - szükséges ismerni a válasz helyességét
+    - jó válasz esetén + 100 pont
+    - rossz válasz esetán -100 pont
+  - szükséges ismerni a válaszhoz szükséges idõt: stopperóra
+    - Ehhez idõmérõ idõmérõ infrastruktúra
+    - amikor kitesszük a kártyát, amire választ várunk, elindítjuk a stoppert
+    - amikor megjön a válasz, megállítjuk a stoppert
+  - esetleg érdemes ismerni az átlagos reakcióidõt is.
+- az eltelt/visszalévõ játékidõ számítása
+  - Ehhez idõmérõ idõmérõ infrastruktúra, valamilyen ismétlõdõ esemény,
+    amire feliratkozva már tudjuk az idõt számolni.
+
+
