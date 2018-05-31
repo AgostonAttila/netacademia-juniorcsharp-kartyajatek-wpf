@@ -16,6 +16,9 @@ using System.Windows.Shapes;
 using FontAwesome.WPF;
 using System.Windows.Media.Animation;
 using System.Windows.Threading;
+using System.Collections.ObjectModel;
+using System.IO;
+using System.Xml.Serialization;
 
 namespace XamlGame
 {
@@ -32,6 +35,9 @@ namespace XamlGame
         private List<long> listReactionTimes;
         private FontAwesomeIcon[] kartyapakli;
         private Random dobokocka;
+        private List<long> listTop5Score;
+        private string top5Filename;
+
 
         /// <summary>
         /// Az ablak un. létrehozó függvénye (constructor)
@@ -90,6 +96,28 @@ namespace XamlGame
             //minden játék idításakor kell
             StartingState();
 
+            //visszatölteni az előző játék eredményét
+            //A top 5 listánkat tartalmazó állomány neve
+            top5Filename = "toplista.txt";
+
+            //figyelni, hogy az állomány létezik-e?
+
+            if (File.Exists(top5Filename))
+            { //ha létezik az állomány, akkor visszatöltjük
+                var fs = new FileStream(top5Filename, FileMode.Open);
+                var szovegesito = new XmlSerializer(typeof(List<long>));
+
+                //a Deserialize függvény általános object-tet ad vissza,
+                //ahhoz, hogy a mi változónkba ez be tudjuk tuszkolni,
+                //explicit módon meg kell mondani, hogy milyen típusra alakítsuk
+                listTop5Score = (List<long>)szovegesito.Deserialize(fs);
+            }
+            else
+            { //ha nem létezik, üres listával kezdünk
+                listTop5Score = new List<long>();
+            }
+
+            ShowTop5Data();
         }
 
 
@@ -114,7 +142,7 @@ namespace XamlGame
             score = 0;
             ShowScore();
 
-            playTime = TimeSpan.FromSeconds(0);
+            playTime = TimeSpan.FromSeconds(10);
             ShowPlayTime();
 
             //az összes reakcióidőt tartalmazó lista létrehozása
@@ -142,6 +170,44 @@ namespace XamlGame
             //megmutatjuk a restart gombot
             ButtonRestart.Visibility = Visibility.Visible;
 
+            //elmentjük az utolsó játék pontszámát
+            listTop5Score.Add(score);
+
+            //top 5 intézése
+            //addig, amíg legfeljebb 5 elem van a listán, addig nem kell tenni semmit.
+            //ha több, mint 5 elemünk van (tehát 6 db) akkor
+            if (listTop5Score.Count > 5)
+            {//sorbarendezés után a legkisebbet törölni kell
+
+                //sorbarendezés
+                listTop5Score.Sort();
+
+                //az elsőt, ami a legkisebb, töröljük
+                //listTop5Score.Remove(listTop5Score[0]);  //így is lehetne, de ez még kevesebb munka
+                listTop5Score.RemoveAt(0);
+
+            }
+
+            //top 5 lista mentése
+            //adatfolyamot hozunk létre, amibe beleírjuk a top 5 listánk tartalmát.
+            //a név a közös név, amit osztályszinten tárolunk
+            //az állományt pedig ha nincs létrehozzuk, ha van felülírjuk
+            var fs = new FileStream(top5Filename, FileMode.Create);
+            //létrehozunk egy olyan objektumot, ami a listánkból olyan szöveget gyárt, 
+            //amit aztán vissza tud olvasni.
+            //ez a szöveg XML formátumú lesz, nyitó és záró tag-ekkel, mint az XAML
+            var szovegesito = new XmlSerializer(typeof(List<long>));
+
+            //majd a megadott file-ba kiiratjuk a listánkat.
+            szovegesito.Serialize(fs, listTop5Score);
+
+            ShowTop5Data();
+        }
+
+        private void ShowTop5Data()
+        {
+            //megjelenítjük a listát, érték szerint csökkenő sorrendben
+            ListBoxTop5.ItemsSource = new ObservableCollection<long>(listTop5Score.OrderByDescending(x => x));
         }
 
         /// <summary>
@@ -151,9 +217,9 @@ namespace XamlGame
         /// <param name="e"></param>
         private void ClockShock(object sender, EventArgs e)
         {
-            playTime = playTime + TimeSpan.FromSeconds(1);
+            playTime = playTime - TimeSpan.FromSeconds(1);
 
-            if (playTime > TimeSpan.FromSeconds(9))
+            if (playTime == TimeSpan.FromSeconds(0))
             { // vége a játéknak
                 FinalState();
             }
@@ -186,16 +252,16 @@ namespace XamlGame
             //eseményvezérlőiben is látszik, így nem lehet lokális változó
             elozoKartya = CardRight.Icon;
 
-            //eltüntetni az előző kártyát
-            var animationOut = new DoubleAnimation(1, 0, TimeSpan.FromMilliseconds(100));
-            CardRight.BeginAnimation(OpacityProperty, animationOut);
+            //eltüntetni az előző kártyát: átköltözik az XAML-be
+            //var animationOut = new DoubleAnimation(1, 0, TimeSpan.FromMilliseconds(100));
+            //CardRight.BeginAnimation(OpacityProperty, animationOut);
 
             //veszem a kártyapakli dobásnak megfelelő elemét és megjelenítem.
             CardRight.Icon = kartyapakli[dobas];
 
-            //megjeleníteni az új kártyát
-            var animationIn = new DoubleAnimation(0, 1, TimeSpan.FromMilliseconds(100));
-            CardRight.BeginAnimation(OpacityProperty, animationIn);
+            //megjeleníteni az új kártyát: átköltözik az XAML-be
+            //var animationIn = new DoubleAnimation(0, 1, TimeSpan.FromMilliseconds(100));
+            //CardRight.BeginAnimation(OpacityProperty, animationIn);
 
             //stopperórát elindítani
             stopwatch.Restart();
@@ -414,20 +480,55 @@ namespace XamlGame
         {
             Debug.WriteLine(e.Key);
 
-            if (e.Key==Key.Up)
-            { // felfelé nyíl: indítás
-                StartGame();
-            }
-
+            //todo: itt is vizsgálni, hogy a gomb elérhető-e?
             if (e.Key==Key.Right)
             { // jobbranyíl: nem gomb
                 NoAnswer();
+                return;
             }
 
+            //todo: itt is vizsgálni, hogy a gomb elérhető-e?
             if (e.Key==Key.Left)
             { //balranyíl: igen gomb
                 YesAnswer();
+                return;
             }
+
+            //Figyelem: figyelni kell arra, hogy a gomb látható és engedélyezve van-e
+            if (ButtonStart.IsEnabled    //az indítás gomb engedélyezve van (kattintható) 
+                && ButtonStart.IsVisible //ÉS az indítás gomb látható 
+                && e.Key == Key.Up)      //ÉS felfelé nyíl jött
+            { // indítás
+                StartGame();
+                return;
+            }
+
+            //Figyelem: figyelni kell arra, hogy a gomb látható és engedélyezve van-e
+            if (ButtonRestart.IsEnabled
+                && ButtonRestart.IsVisible
+                && e.Key==Key.Multiply)
+            { //csillag gomb: játék újrakezdése
+                StartingState();
+                return;
+            }
+
+            ///Ctrl+K, Ctrl+C a kijelölt rész megjegyzésbe tétele
+            ///Ctrl+K, Ctrl+U a kijelölt rész megjegyzésből kivétele
+            //switch (e.Key)
+            //{
+            //    case Key.Left:
+            //        if (ButtonYes.IsEnabled)
+            //        {
+            //            YesAnswer();
+            //        }
+            //        break;
+            //    case Key.Up:
+            //        break;
+            //    case Key.Right:
+            //        break;
+            //    case Key.Multiply:
+            //        break;
+            //}
 
         }
     }
